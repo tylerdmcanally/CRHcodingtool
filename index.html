@@ -109,11 +109,12 @@
             <label>
               Problems Addressed
               <select id="problems">
-                <option value="straightforward">Minimal problem</option>
-                <option value="low">Stable chronic illness or acute uncomplicated illness</option>
-                <option value="moderate" selected>Two stable chronic illnesses, exacerbation, systemic symptoms, or uncertain prognosis</option>
-                <option value="high">Severe exacerbation, threat to life/bodily function, or treatment safety concern</option>
+                <option value="straightforward">Straightforward problems</option>
+                <option value="low">Low problem complexity</option>
+                <option value="moderate" selected>Moderate problem complexity</option>
+                <option value="high">High problem complexity</option>
               </select>
+              <span id="problemsHelp" class="field-help"></span>
             </label>
 
             <div class="data-builder">
@@ -149,10 +150,11 @@
               Management Risk
               <select id="risk">
                 <option value="straightforward">Minimal risk</option>
-                <option value="low">Low risk, OTC treatment, or minor procedure without risk factors</option>
-                <option value="moderate" selected>Prescription management, limited treatment due to social determinants, or procedure/surgery decision with usual risk</option>
-                <option value="high">Intensive drug monitoring, hospitalization decision, high-risk procedure/surgery, or de-escalation/DNR decision</option>
+                <option value="low">Low management risk</option>
+                <option value="moderate" selected>Moderate management risk</option>
+                <option value="high">High management risk</option>
               </select>
+              <span id="riskHelp" class="field-help"></span>
             </label>
           </div>
         </section>

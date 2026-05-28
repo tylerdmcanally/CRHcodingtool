@@ -6,6 +6,20 @@ const levelLabels = {
   high: "High"
 };
 
+const problemDetails = {
+  straightforward: "Minimal: one self-limited or minor problem.",
+  low: "Low: stable chronic illness, acute uncomplicated illness/injury, or two minor problems.",
+  moderate: "Moderate: two stable chronic illnesses, exacerbation/progression, systemic symptoms, uncertain prognosis, or acute complicated injury.",
+  high: "High: severe exacerbation/progression, treatment side effect, or acute/chronic illness posing threat to life or bodily function."
+};
+
+const riskDetails = {
+  straightforward: "Minimal: minimal risk from testing or treatment.",
+  low: "Low: low-risk testing/treatment, OTC medication, or minor procedure without risk factors.",
+  moderate: "Moderate: prescription management, SDOH-limited treatment, or procedure/surgery decision with usual risk.",
+  high: "High: intensive toxicity monitoring, hospitalization/escalation, high-risk procedure/surgery, or DNR/de-escalation decision."
+};
+
 const officeCodes = {
   new: {
     straightforward: "99202",
@@ -402,8 +416,8 @@ function getRouteItems(result) {
 }
 
 function buildDocumentation(result) {
-  const problems = $("problems").selectedOptions[0].text;
-  const risk = $("risk").selectedOptions[0].text;
+  const problems = problemDetails[$("problems").value];
+  const risk = riskDetails[$("risk").value];
   const dataParts = [];
   const modality = modalityMeta[result.modality];
   const eligibility = isTelehealthEAndMEligible() ? "E/M eligibility checks passed" : getEligibilityHoldReason();
@@ -452,6 +466,8 @@ function update() {
   $("routeChip").textContent = modalityMeta[result.modality].label;
   $("mdmChip").textContent = formatLevel(result.mdmLevel);
   $("dataLevel").textContent = formatLevel(result.dataLevel);
+  $("problemsHelp").textContent = problemDetails[$("problems").value];
+  $("riskHelp").textContent = riskDetails[$("risk").value];
   $("timeOutput").textContent = `${result.minutes} min`;
   $("primaryCode").textContent = displayCode;
   document.querySelector(".code-card").classList.toggle("review", !eligible);
