@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CRH Telehealth E/M Coding Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Clinical Resource Hub workflow</p>
+        <h1>CRH Telehealth E/M Coding Assistant</h1>
+      </div>
+      <div class="source-badge">
+        <span>Guidance reviewed</span>
+        <strong>May 28, 2026</strong>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="workflow" aria-label="CRH coding workflow">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Step 1</p>
+            <h2>CRH Encounter Setup</h2>
+          </div>
+          <button id="resetBtn" class="reset-button" type="button">Reset</button>
+        </div>
+
+        <div class="grid two">
+          <fieldset>
+            <legend>Encounter Type</legend>
+            <div class="segmented" data-bind="modality">
+              <button type="button" data-value="cvt" class="active">CVT</button>
+              <button type="button" data-value="vvc">VVC</button>
+              <button type="button" data-value="phone">Phone</button>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Coding Rule Set</legend>
+            <div class="segmented" data-bind="payer">
+              <button type="button" data-value="va" class="active">VA workload</button>
+              <button type="button" data-value="medicare">Medicare/CMS</button>
+              <button type="button" data-value="commercial">CPT telehealth</button>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="grid two">
+          <fieldset>
+            <legend>Patient Status</legend>
+            <div class="segmented" data-bind="patientType">
+              <button type="button" data-value="established" class="active">Established</button>
+              <button type="button" data-value="new">New</button>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Selection Method</legend>
+            <div class="segmented" data-bind="method">
+              <button type="button" data-value="best" class="active">Best supported</button>
+              <button type="button" data-value="mdm">MDM</button>
+              <button type="button" data-value="time">Time</button>
+            </div>
+          </fieldset>
+        </div>
+
+        <section class="tool-section" aria-labelledby="telehealthTitle">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Step 2</p>
+              <h2 id="telehealthTitle">Telehealth Documentation</h2>
+            </div>
+            <div class="level-chip" id="routeChip">CVT clinic</div>
+          </div>
+
+          <div class="check-grid">
+            <label class="check">
+              <input id="synchronous" type="checkbox" checked>
+              Synchronous clinician-patient interaction occurred
+            </label>
+            <label class="check">
+              <input id="patientPresent" type="checkbox" checked>
+              Patient was present and consent/modality was documented
+            </label>
+            <label class="check">
+              <input id="techData" type="checkbox" checked>
+              CRH site support data reviewed when applicable: vitals, medication reconciliation, EKG, imaging, labs, or exam assistance
+            </label>
+            <label class="check">
+              <input id="notJustResults" type="checkbox" checked>
+              Encounter was not only a brief result notification, scheduling call, or administrative check-in
+            </label>
+          </div>
+        </section>
+
+        <section class="tool-section" aria-labelledby="mdmTitle">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Step 3</p>
+              <h2 id="mdmTitle">Medical Decision Making</h2>
+            </div>
+            <div class="level-chip" id="mdmChip">Moderate</div>
+          </div>
+
+          <div class="mdm-grid">
+            <label>
+              Problems Addressed
+              <select id="problems">
+                <option value="straightforward">Minimal problem</option>
+                <option value="low">Stable chronic illness or acute uncomplicated illness</option>
+                <option value="moderate" selected>Two stable chronic illnesses, exacerbation, systemic symptoms, or uncertain prognosis</option>
+                <option value="high">Severe exacerbation, threat to life/bodily function, or treatment safety concern</option>
+              </select>
+            </label>
+
+            <div class="data-builder">
+              <div class="label-row">
+                <span>Data Reviewed or Analyzed</span>
+                <strong id="dataLevel">Low</strong>
+              </div>
+              <div class="counter-grid">
+                <label>
+                  Tests ordered or reviewed
+                  <input id="testsCount" type="number" min="0" max="12" value="1">
+                </label>
+                <label>
+                  External notes or unique sources
+                  <input id="notesCount" type="number" min="0" max="12" value="1">
+                </label>
+              </div>
+              <label class="check">
+                <input id="independentHistorian" type="checkbox">
+                Independent historian used
+              </label>
+              <label class="check">
+                <input id="independentInterpretation" type="checkbox">
+                Independent interpretation of test, tracing, or image
+              </label>
+              <label class="check">
+                <input id="externalDiscussion" type="checkbox">
+                Discussion with external clinician or qualified source
+              </label>
+            </div>
+
+            <label>
+              Management Risk
+              <select id="risk">
+                <option value="straightforward">Minimal risk</option>
+                <option value="low">Low risk, OTC treatment, or minor procedure without risk factors</option>
+                <option value="moderate" selected>Prescription management, limited treatment due to social determinants, or procedure/surgery decision with usual risk</option>
+                <option value="high">Intensive drug monitoring, hospitalization decision, high-risk procedure/surgery, or de-escalation/DNR decision</option>
+              </select>
+            </label>
+          </div>
+        </section>
+
+        <section class="tool-section" aria-labelledby="timeTitle">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Step 4</p>
+              <h2 id="timeTitle">Clinician Time</h2>
+            </div>
+            <output id="timeOutput" for="timeMinutes">30 min</output>
+          </div>
+
+          <input id="timeMinutes" class="time-slider" type="range" min="0" max="130" value="30">
+          <div class="time-row">
+            <span>0</span>
+            <span>130+ minutes</span>
+          </div>
+          <label class="check">
+            <input id="timeDocumented" type="checkbox" checked>
+            Same-date clinician time is documented and attributable to this encounter
+          </label>
+        </section>
+
+        <section class="tool-section" aria-labelledby="procedureTitle">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Step 5</p>
+              <h2 id="procedureTitle">Add-ons and Separately Reportable Work</h2>
+            </div>
+          </div>
+
+          <div class="check-grid">
+            <label class="check">
+              <input id="minorProcedure" type="checkbox">
+              Procedure, injection, AWV, vaccine, preventive service, or separately billable service also performed
+            </label>
+            <label class="check">
+              <input id="modifier25" type="checkbox">
+              Separate problem-oriented E/M work supports modifier 25
+            </label>
+            <label class="check">
+              <input id="preventiveException" type="checkbox">
+              Medicare preventive exception applies for G2211 with modifier 25
+            </label>
+            <label class="check">
+              <input id="longitudinal" type="checkbox" checked>
+              Longitudinal focal-point care or ongoing care for a serious/complex condition supports G2211
+            </label>
+          </div>
+        </section>
+      </section>
+
+      <aside class="result-panel" aria-label="Coding recommendation">
+        <div class="sticky-result">
+          <p class="eyebrow">Recommendation</p>
+          <div class="code-card">
+            <span id="primaryCode">98006</span>
+            <strong id="primaryLabel">CVT established E/M</strong>
+            <p id="basisText">MDM supports 98006; time supports 98006.</p>
+          </div>
+
+          <div class="score-grid" aria-label="Supporting details">
+            <div>
+              <span>Route</span>
+              <strong id="routeResult">CVT</strong>
+            </div>
+            <div>
+              <span>MDM</span>
+              <strong id="mdmResult">Moderate</strong>
+            </div>
+            <div>
+              <span>Time</span>
+              <strong id="timeResult">98006</strong>
+            </div>
+          </div>
+
+          <section class="decision-box" aria-label="Coding rationale">
+            <div class="decision-head">
+              <span>Why This Code</span>
+              <strong id="basisResult">MDM</strong>
+            </div>
+            <div id="mdmBreakdown" class="mdm-breakdown"></div>
+            <p id="supportNote" class="support-note"></p>
+          </section>
+
+          <div id="addons" class="addons" aria-live="polite"></div>
+          <div id="warnings" class="warnings" aria-live="polite"></div>
+
+          <label class="note-label">
+            Documentation Support
+            <textarea id="documentationText" readonly rows="9"></textarea>
+          </label>
+
+          <div class="button-row">
+            <button id="copyBtn" type="button">Copy Summary</button>
+            <button id="printBtn" type="button" class="secondary">Print</button>
+          </div>
+
+          <details class="references">
+            <summary>Source References</summary>
+            <ul>
+              <li>VA coding coordinator handout: 2026 MDM Time Telemedicine Audio Only Guidelines</li>
+              <li>VA coding coordinator handout: 2026 MDM Time Telemedicine Audio Visual Guidelines</li>
+              <li><a href="https://www.va.gov/vhapublications/ViewPublication.asp?pub_ID=10180" target="_blank" rel="noreferrer">VHA Directive 1082, Patient Care Data Capture and Closeout</a></li>
+              <li><a href="https://www.va.gov/VHAPUBLICATIONS/ViewPublication.asp?pub_ID=8807" target="_blank" rel="noreferrer">VHA Directive 1914, Telehealth Clinical Resource Sharing</a></li>
+              <li><a href="https://www.va.gov/VHAPUBLICAtIONs/ViewPublication.asp?pub_ID=10116" target="_blank" rel="noreferrer">VHA Directive 1915, Enterprise Clinical Resource Sharing through Telehealth Hubs</a></li>
+              <li><a href="https://www.va.gov/vhapublications/ViewPublication.asp?pub_ID=11456" target="_blank" rel="noreferrer">VHA Directive 1090, Telephone Access for Clinical Care</a></li>
+              <li><a href="https://www.cms.gov/medicare/payment/fee-schedules/physician/evaluation-management-visits" target="_blank" rel="noreferrer">CMS Evaluation &amp; Management Visits</a></li>
+              <li><a href="https://www.cms.gov/training-education/medicare-learning-networkr-mln/compliance/medicare-provider-compliance-tips/evaluation-management-services" target="_blank" rel="noreferrer">CMS E/M Compliance Tips</a></li>
+              <li><a href="https://www.cms.gov/files/document/mm13473-how-use-office-and-outpatient-evaluation-and-management-visit-complexity-add-code-g2211.pdf" target="_blank" rel="noreferrer">CMS MM13473 G2211 guidance</a></li>
+              <li><a href="https://www.ama-assn.org/practice-management/cpt/cpt-evaluation-and-management-em-revisions-faqs" target="_blank" rel="noreferrer">AMA CPT E/M FAQ</a></li>
+              <li><a href="https://www.aafp.org/family-physician/practice-and-career/getting-paid/coding/coding-telehealth-audio-virtual-digital-visits.html" target="_blank" rel="noreferrer">AAFP telehealth coding summary</a></li>
+              <li><a href="https://www.aafp.org/practice-operations/billing-and-coding/evaluation-management/time-and-medical-decision-making-levels-evaluation-and-management" target="_blank" rel="noreferrer">AAFP E/M time and MDM table</a></li>
+            </ul>
+          </details>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <p>This tool supports CRH clinician workflow and does not replace the official CPT codebook, VA facility coding policy, payer policy, DSS/stop-code guidance, or certified coding review. Do not enter patient identifiers.</p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
